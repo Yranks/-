@@ -1,0 +1,74 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <ctime>
+#include <cstdlib>
+
+using namespace std;
+
+// 随机生成编号
+string generateId(int length) {
+    static const char alphanum[] =
+        "0123456789"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    string tmp(length, ' ');
+    for (int i = 0; i < length; ++i) {
+        tmp[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
+    }
+    return tmp;
+}
+
+// 轮胎类
+class Tire {
+public:
+    string type;
+    int size;
+
+    void setType(const string& new_type) { type = new_type; }
+    void setSize(int new_size) { size = new_size; }
+
+    void print() const {
+        cout << "轮胎类型: " << type << ", 尺寸: " << size << "mm" << endl;
+    }
+
+    void saveToFile(ofstream& file) const {
+        file << type << endl;
+        file << size << endl;
+    }
+
+    void loadFromFile(ifstream& file) {
+        getline(file, type);
+        file >> size;
+        file.ignore(); // 忽略换行符
+    }
+};
+
+// 底盘类
+class Chassis {
+public:
+    string id;
+    string model = "SCOUT MINI";
+    int wheelbase = 451;
+    int tread = 490;
+    int minGroundClearance = 115;
+    float minTurningRadius = 0;
+    string driveType = "四轮四驱";
+    int maxTravelDistance = 10 * 1000; // 单位转换为米
+    vector<Tire> tires;
+
+    Chassis() {
+        id = "dp" + generateId(8);
+        tires.push_back(Tire{ "公路轮", 175 });
+        tires.push_back(Tire{ "麦克纳姆轮", 175 });
+    }
+
+    void setId(const string& new_id) { id = new_id; }
+    void setModel(const string& new_model) { model = new_model; }
+    void setWheelbase(int new_wheelbase) { wheelbase = new_wheelbase; }
+    void setTread(int new_tread) { tread = new_tread; }
+    void setMinGroundClearance(int new_minGroundClearance) { minGroundClearance = new_minGroundClearance; }
+    void setMinTurningRadius(float new_minTurningRadius) { minTurningRadius = new_minTurningRadius; }
+    void setDriveType(const string& new_driveType) { driveType = new_driveType; }
+    void setMaxTravelDista
